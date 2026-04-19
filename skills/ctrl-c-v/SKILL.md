@@ -32,10 +32,12 @@ When you enter a project, before doing anything else:
 
 2. CLAUDE.md exists in project root?
    YES → Read it. Check Progress. Resume.
-   NO  → Create it. Scan project:
-         - Tech stack from package.json / pyproject.toml / README
-         - Progress from git log --oneline -20
-         - References from existing design.md, docs/, templates/
+   NO  → Copy from ${CLAUDE_SKILL_DIR}/../../templates/CLAUDE_TEMPLATE.md
+         into project root as CLAUDE.md.
+         Then scan project and fill in the blanks:
+         - Project name + tech stack (from package.json / pyproject.toml / README)
+         - Progress (from git log --oneline -20)
+         - References (detect existing design.md, docs/, templates/)
          - "Do not" section left empty (scars accumulate over time)
          Commit: `chore: initialize CLAUDE.md`
 ```
