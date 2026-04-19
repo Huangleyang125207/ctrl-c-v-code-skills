@@ -1,0 +1,15 @@
+{
+  "name": "ctrl-c-v-code-skills",
+  "plugins": [
+    {
+      "name": "ctrl-c-v-code-skills",
+      "description": "Copy-paste-first coding principles. Code is memory. Comments are search indexes. Stop writing from scratch.",
+      "source": {
+        "type": "relative",
+        "path": "."
+      },
+      "category": "coding-style",
+      "tags": ["best-practices", "maintainability", "copy-paste", "pattern-reuse"]
+    }
+  ]
+}

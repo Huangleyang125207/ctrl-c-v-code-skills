@@ -1,0 +1,31 @@
+{
+  "name": "ctrl-c-v-code-skills",
+  "version": "1.0.0",
+  "description": "Copy-paste-first coding principles. Makes AI work like a senior engineer who never writes from scratch: grep, copy, adapt, ship. Code is memory. Comments are search indexes.",
+  "author": {
+    "name": "[your-github-username]"
+  },
+  "license": "MIT",
+  "skills": [
+    {
+      "name": "ctrl-c-v",
+      "path": "skills/ctrl-c-v/SKILL.md",
+      "description": "Global coding persona: copy-paste hierarchy, pattern indexing, surgical changes, self-review, and cross-project pattern reuse. Use for all coding tasks."
+    }
+  ],
+  "keywords": [
+    "coding-style",
+    "copy-paste",
+    "maintainability",
+    "code-quality",
+    "pattern-reuse",
+    "best-practices"
+  ],
+  "compatible-with": [
+    "claude-code",
+    "cursor",
+    "codex",
+    "windsurf",
+    "gemini-cli"
+  ]
+}
