@@ -11,6 +11,11 @@
       "name": "ctrl-c-v",
       "path": "skills/ctrl-c-v/SKILL.md",
       "description": "Global coding persona: copy-paste hierarchy, pattern indexing, surgical changes, self-review, and cross-project pattern reuse. Use for all coding tasks."
+    },
+    {
+      "name": "ctrl-c-v-tdd",
+      "path": "skills/ctrl-c-v-tdd/SKILL.md",
+      "description": "Test-driven extension. Tests are copyable patterns from ~/.claude/patterns/tests/ across three categories (input boundary, contract, effect). Activates on external callers, persisted state, third-party APIs, or LARGE tasks per ctrl-c-v sizing."
     }
   ],
   "keywords": [
@@ -19,7 +24,10 @@
     "maintainability",
     "code-quality",
     "pattern-reuse",
-    "best-practices"
+    "best-practices",
+    "tdd",
+    "boundary-tests",
+    "test-patterns"
   ],
   "compatible-with": [
     "claude-code",
