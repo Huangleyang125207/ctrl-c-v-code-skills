@@ -16,6 +16,11 @@
       "name": "ctrl-c-v-tdd",
       "path": "skills/ctrl-c-v-tdd/SKILL.md",
       "description": "Test-driven extension. Tests are copyable patterns from ~/.claude/patterns/tests/ across three categories (input boundary, contract, effect). Activates on external callers, persisted state, third-party APIs, or LARGE tasks per ctrl-c-v sizing."
+    },
+    {
+      "name": "human-ai-schedule",
+      "path": "skills/human-ai-schedule/SKILL.md",
+      "description": "Co-author doctrine for shared, half-hour-block daily schedules. Locate by JSONL timestamp, format per project skeleton, dual-signature commits in #协作 paragraphs, sync project events to aggregation index. Use for any dated daily log / journal / retro work."
     }
   ],
   "keywords": [
@@ -27,7 +32,10 @@
     "best-practices",
     "tdd",
     "boundary-tests",
-    "test-patterns"
+    "test-patterns",
+    "journal",
+    "retrospective",
+    "co-authorship"
   ],
   "compatible-with": [
     "claude-code",
