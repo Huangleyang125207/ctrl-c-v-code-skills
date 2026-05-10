@@ -17,16 +17,25 @@ Delete this comment after first use.
 ---
 
 <!--
-USAGE:
-- Empty `## ` cells below are placeholders. Fill as tasks happen.
-- Each filled cell answers two questions (per § H5):
-    1. What changed
-    2. Why it matters
-- Drop tool names, paths, step-by-step procedure.
-- A cell is removed ONLY if its time falls inside another task's
-  verified span (not on guess). Otherwise leave empty cells alone.
+FORMAT CONVENTIONS (single source of truth — reference in this file):
 
-Delete this comment after first use.
+- H1 (`# 7：30`) marks each time-block, a NEW task boundary
+- H2 (`## #tag short title`) is the task line under each H1, prefixed `#`
+- Multi-tag allowed: `## #运动/散步 #娱乐 看剧`
+- Single `---` between blocks (NEVER `***` or multi-`---`)
+- Full-width colon `7：30` — NOT half-width `7:30`
+  (Obsidian anchors are character-sensitive; mixed colons break #links)
+- Cell stays placeholder-empty (`##`) until filled
+
+CONTENT RULES (also see § H5 / § H2 in SKILL.md):
+- Each filled cell answers: (1) what changed, (2) why it matters
+- Drop tool names / paths / step-by-step procedure
+- Empty cells = user placeholders (preserve, never auto-clean)
+- Remove a cell ONLY if its time falls inside another task's verified
+  span (per § H2 cell-merging rule, which requires JSONL timestamp
+  or user-stated duration as proof)
+
+Delete this comment block after first use, or keep as inline reference.
 -->
 
 # 7：30

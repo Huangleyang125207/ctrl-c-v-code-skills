@@ -79,14 +79,12 @@ Decision tree details and forensics → @${CLAUDE_SKILL_DIR}/playbooks/locate.md
 
 ## § H2 — File skeleton (project-defined)
 
-Skeleton (filename, top checklist section, pre-padded time-block cadence) is project-defined in `SCHEDULE_TEMPLATE.md`. Universal invariants:
+**Format conventions** (H1 syntax, full-width colon, separator, tag prefix, etc.) live as inline comments in `SCHEDULE_TEMPLATE.md`. Single source of truth — read there when editing the format itself.
+
+**Semantic invariants** (these stay here — govern when cells are written/deleted, not how cells look):
 
 ```
-□  Time-block (H1) marks a content-anchor point in the day
-□  Tag segments under a time-block are H2, prefixed `#`
-□  Single `---` between blocks
-□  Colon style (full-width / half) consistent file-wide — match what exists
-□  Pre-padded empty cells ARE placeholders — preserve them for unrecorded periods
+□  Pre-padded empty cells = user's placeholders (preserve, never auto-clean)
 □  Delete a cell ONLY if it falls inside a verified-active task's span
 □  Verify span via JSONL timestamps OR user-stated duration. Never preemptively merge.
 ```
@@ -96,7 +94,7 @@ Cell-merging rule (the only time you remove a cell):
 2. Same task continues past `H1+1：MM` cell boundary (verified by timestamps)
 3. Delete the cells INSIDE the verified span. Keep the START cell. Keep the cells AFTER the span.
 
-If you cannot verify the span, leave all cells alone — empty cells are user's placeholders for later, not errors to clean up.
+If you cannot verify the span, leave all cells alone.
 
 ## § H3 — Tags (vocabulary project-defined, rules universal)
 
