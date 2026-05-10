@@ -219,6 +219,46 @@ Schedule (chronological) and aggregation (by topic) are two views of same data. 
 | `#协作` segment present | § H4 evaluation — write commit only if risk/dep/uncertainty |
 | project-tagged segment added | mirror to aggregation page same turn |
 
+## § H9 — Project pulse (derived snapshot)
+
+When project has > 7 dated schedule files, maintain `PULSE.md` at project root. It is the project-level answer to § H5's two questions: what's the current state, why this state matters for any new collaborator entering the project.
+
+Trigger pulse refresh when:
+
+```
+□  Sunday weekly retrospective
+□  user says "refresh pulse" / "刷新 pulse"
+□  PULSE.md missing AND schedule has > 7 dated files (offer to create)
+□  PULSE.md exists AND last-refreshed > 7 days (warn, suggest refresh)
+```
+
+Refresh procedure (when triggered, walk this):
+
+```
+1. Read templates/PULSE_TEMPLATE.md (the 9-section skeleton)
+2. Derive each section from sources:
+   - 一句话 / Stage      → CLAUDE.md first line + git tags
+   - 心跳                 → CLAUDE.md Progress + most recent 7 days schedule
+   - 当下气压             → ASK user (subjective, AI cannot derive)
+   - 历史阶段             → git tags + schedule milestones tagged with #milestone
+   - 应该知道             → ASK user (cross-cutting context, AI cannot derive)
+   - 不要做的事           → CLAUDE.md "Do not" + unresolved schedule #commit risks
+   - 时间锚点入口         → most-cited #project-tag entries from tag-index
+3. Show diff to user → user confirms or edits
+4. Write to PULSE.md → update "Last refreshed" date
+```
+
+Sections marked ASK user are the soul of pulse — vibes cannot be derived, they must be stated. If user does not respond, leave the prior content; do NOT fabricate a vibe.
+
+Anti-defaults (this section overrides):
+
+| AI default when entering project | What pulse forces instead |
+|---|---|
+| Treat every project as identical | Read 🟢/🟡/🔴 status, calibrate caution |
+| Guess user count from code scale | Read explicit user count from PULSE |
+| Ignore legal/compliance state | Read deadline countdown from PULSE |
+| Lose time pressure context | Read milestone history + (← now) marker |
+
 ---
 
 ## — Completion criteria —
