@@ -2,18 +2,32 @@
 
 > Loaded by § H5.
 
-## The two-question test (primary)
+## The 1-year test (primary rubric)
 
-Every entry must answer:
+> Glance at this entry 12 months from now for 5 seconds. Do you still know what happened that day?
+
+This is the only test that matters. Everything below is consequence of failing it.
+
+If yes → keep.
+If no → almost always the failure is **procedure leakage**: version numbers, tool names, file paths, library names, API endpoints, line counts. All decay to noise within months.
+
+Derived rubric — every entry must answer:
 
 ```
 1. What changed   — concretely, in the project / system / your understanding
 2. Why it matters — what does this enable, unblock, or clarify going forward
 ```
 
-If neither answer is obvious to a 6-month-later reader, the entry is broken — either overspecified (procedure leaked through) or underspecified (vague feel-words).
+If neither answer is obvious to a 12-month-later reader, the entry is broken — either overspecified (procedure leaked through) or underspecified (vague feel-words).
 
-The journal exists for **future-you reading 6 months later**, not for the writer's present moment of working through something. The writer remembers everything; the reader has zero context.
+The journal exists for **future-you reading 12 months later**, not for the writer's present moment of working through something. The writer remembers everything; the reader has zero context.
+
+**Hard banned vocabulary** (delete on sight when reviewing your own entry):
+- Version numbers: `v0.4`, `v0.4.1`, `第三版`
+- Tool / lib / API: `FastAPI`, `DeepSeek`, `chokidar`, `widget-loader.js`
+- File paths: `shared/journal.js`, `scripts/X.sh`
+- Endpoint / function names: `/api/journal/today`, `patch_journal_block`
+- Pure status notes: "没真测过", "下次再调", "x 行代码"
 
 ## Anti-pattern: procedure dump
 

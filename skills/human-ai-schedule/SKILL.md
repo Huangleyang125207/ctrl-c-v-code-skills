@@ -190,17 +190,37 @@ Silence is the default.
 
 ## § H5 — Granularity & Voice
 
-Each entry must answer two questions for a reader six months later:
+**Primary rubric — the 1-year test**:
+
+> Glance at this entry 12 months from now for 5 seconds. Do you still know what happened that day?
+
+If no: the entry is broken. Almost always the failure is procedure leakage — version numbers, tool names, file paths, library names, API endpoints, line counts. These all decay to noise inside months.
+
+Apply derived rubric — every entry must answer:
 
 ```
 1. What changed — concretely, in the project / system / your understanding
 2. Why it matters — what does this enable, unblock, or clarify next
 ```
 
-If neither answer is obvious, the entry is broken (overspecified procedure, or underspecified vibes). The journal is a decision-and-insight log, not a code log.
+If neither answer is obvious to a reader 12 months later, the entry is broken.
 
-**Drop**: tool names, function signatures, file paths, step-by-step procedure, error texts unless the error itself is the lesson.
-**Keep**: outcome, decision, insight, risk noticed (latter goes in #commit per § H4).
+**Drop unconditionally**:
+- Version numbers (`v0.4.1`, `第三版`)
+- Tool / library / API names (`FastAPI`, `chokidar`, `DeepSeek`)
+- File paths (`shared/journal.js`, `scripts/X.sh`)
+- Function names, endpoint names, schema field lists
+- Line counts, file counts, time durations (unless the duration is the memorable point)
+- "没真测过" / "下次再调" / pure status updates
+
+**Keep**:
+- The insight (what's now different in your understanding of the world)
+- The decision (what was chosen and why, in 5 seconds)
+- The outcome (what's now possible that wasn't yesterday)
+- Risk noticed (goes to `#commit` per § H4)
+- Concrete domain detail when it's load-bearing (e.g. "Clash TUN 挂死 baostock socket" — keep, because the lesson is transferable)
+
+**Self-audit hook**: every Stop hook fires `schedule-self-audit.sh`. It detects schedule edits and prepends `[schedule-audit]` to the next user prompt with the 1-year checklist. Seeing it means: revise the entries you just wrote BEFORE answering the next user query.
 
 Voice rules (after granularity is right):
 
