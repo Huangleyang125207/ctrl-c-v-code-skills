@@ -16,8 +16,10 @@ description: |
   files, new capability, new architecture, new external contract)
   — LARGE always triggers TDD regardless of caller scope; user
   mentions tests, TDD, 测试, boundary, contract, mock, fixture,
-  red/green; business domain involves payments, queues, webhooks,
-  auth, external integration.
+  red/green, characterization test, pinning test, golden master,
+  refactor; business domain involves payments, queues, webhooks,
+  auth, external integration; refactor of working code (no current
+  tests) → § T7 characterization mode applies.
   SKIP when: code change is purely internal helpers used only by
   caller in same file; pure UI rendering with no validation/state;
   accessor < 10 lines with no if/loop/exception; one-file fix that
@@ -72,6 +74,7 @@ Same SMALL / MEDIUM / LARGE. TDD slots into each.
 - **SMALL** — no tests. § 6 self-review is the gate.
 - **MEDIUM** — § T0 decides. If YES: copy test pattern → RED → implement → GREEN → § 6 → § 7.
 - **LARGE** — tests required and written FIRST. Active spec lists test cases as part of Plan. Boundary tests all RED before any implementation. Each task in Tasks: turns specific tests GREEN.
+- **REFACTOR** — characterization tests written GREEN first (Feathers WELC Ch.13; aka pinning / golden master / approval); STAY GREEN through extract. See § T7.
 
 When in doubt, the § T0 table decides — not vibes.
 
@@ -129,6 +132,15 @@ When no pattern fits → @${CLAUDE_SKILL_DIR}/playbooks/test-scratch.md
 □  Test fails for the right reason: comment out impl → does it RED?
 □  TEST PATTERN tag added if shape is reusable
 □  Test file mirrors source (framework convention)
+□  Mock 是 Test Spy (captures call args + asserted), not just a Stub
+   configured to return a value (Meszaros 2007; Fowler "Mocks Aren't
+   Stubs" 2007). Use autospec / spec_set / interface-based mocks
+   (mockall / Mockito / gomock) so the type system enforces signature
+   drift detection.
+□  Dependency substitution happens at the **use site**, not the
+   definition site. Python = `mock.patch("caller_module.dep")`;
+   Java = @MockBean / @InjectMocks; Go / Rust = constructor DI of an
+   interface / trait, with mock implementations from gomock / mockall.
 ```
 
 Red flag: a test that still passes when you delete the implementation
@@ -154,6 +166,46 @@ task maps to specific tests turning GREEN. "Verify" in Tasks checklist
 
 LARGE-specific rhythm → @${CLAUDE_SKILL_DIR}/playbooks/test-large.md
 
+## § T7 — Characterization tests (refactor mode)
+
+When the code under change is **already working** (LARGE refactor mode,
+ctrl-c-v § 9), TDD inverts: write tests that pass on the current
+monolith first (locking observed behavior), then refactor with those
+tests as the contract — any drift = revert.
+
+Aliases (grep for all of these):
+- **characterization test** — Feathers, *WELC* Ch.13 (canonical)
+- **pinning test** — same shape, common in Java/Spring circles
+- **golden master** — same, common in Approval Tests toolchain
+- **approval testing** — Llewellyn Falco / Emily Bache framework family
+
+Mnemonic: "GREEN-LOCK" — you lock the current GREEN state, refactor,
+stay GREEN. If a characterization test goes RED during refactor, you
+changed behavior; revert and split structural vs behavioral commits
+(Beck, *Tidy First* 2024).
+
+Full mechanics + per-stack examples → @${CLAUDE_SKILL_DIR}/playbooks/test-refactor.md
+Execution sits at Step 2 of the extraction recipe → see ctrl-c-v/playbooks/refactor-extract.md
+
+## § T8 — Adversarial test expansion (LARGE only)
+
+After characterization tests are written GREEN but **before** the
+refactor starts, run an adversarial review of the test net itself:
+parallel LLM agents (or multiple human reviewers, or composed static
+tools — coverage diff + mutation testing + linters) hunt for must-add
+tests the spec missed.
+
+Composes Fagan 1976 (inspection rigor) + Klein 2007 (pre-mortem
+timing) + LLM agent fan-out (cost). The LLM era reduces classical
+Fagan inspection from days-with-N-people to ~10 min, making
+pre-refactor review affordable for the first time.
+
+**Skip for SMALL / MEDIUM** — ROI doesn't justify; the cost of the
+review exceeds the cost of the bug it would catch.
+
+Full rhythm → @${CLAUDE_SKILL_DIR}/playbooks/test-refactor.md
+("adversarial expansion" section)
+
 ---
 
 ## — Completion criteria —
@@ -168,5 +220,13 @@ lines, ship.
 Tests catch the break before merge. You stay on the slopes.
 
 ---
+
+*Source disclaimer:* § T7 / § T8 derived from a single Python+FastAPI
+monolith characterization + extraction (gateway/server.py, 2026-06).
+Patterns generalized via Feathers/Beck/Meszaros/Fowler/Fagan/Klein
+classics. Non-Python stacks: § T7 generalizes cleanly; § T8 LLM-cost
+assumption holds in any framework; § T5 patch-where-used line has a
+Python-leaning example — see playbooks/test-refactor.md for Java/Go/
+Rust/TS equivalents.
 
 *See you on the slopes.* ⛷️

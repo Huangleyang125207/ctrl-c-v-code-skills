@@ -15,7 +15,8 @@ description: |
   or PR; file changes touch *.py *.ts *.tsx *.js *.jsx *.go *.rb
   *.rs *.java *.kt *.swift *.cpp *.c *.h *.cs *.php *.lua *.sh;
   user opens or enters a new project for the first time (no
-  CLAUDE.md present yet).
+  CLAUDE.md present yet); refactoring or extracting from a
+  monolith → § 9 mode applies.
   SKIP when: pure markdown/config edit (yaml, json, toml, env);
   conceptual question without code-change intent ("how does X
   work"); diary / journal / retro / supplement notes; pure
@@ -23,8 +24,8 @@ description: |
   deleting files as a side-effect of a non-code task (removing a
   stale screenshot, clearing logs).
   Examples that trigger: "implement login endpoint", "fix this
-  bug", "refactor the parser", "add a hook for X", first session
-  in an empty project.
+  bug", "refactor the parser", "extract module", "split monolith",
+  "add a hook for X", first session in an empty project.
   Examples that skip: "explain what async means", "今天的复盘",
   "write a README", "delete those old screenshots".
 ---
@@ -178,6 +179,45 @@ never opens a message to you.
 
 Collaboration standards → @${CLAUDE_SKILL_DIR}/playbooks/collab.md
 
+## § 9 — Refactor mode (Extract Module)
+
+Refactor = restructuring without changing external behavior (Fowler,
+*Refactoring* 2e 序言). It is an **explicitly enlarged scope** as the
+task itself — § 4 (Touch only what task requires) still bans Boy Scout
+tidying inside SMALL/MEDIUM tasks; refactor mode is § 4's legitimate
+escape hatch, not its exception. Declare it as the task.
+
+Classic idiom index (cite the one that applies; don't invent local names):
+
+- **Seam** (Feathers, *WELC* Ch.4) — where you can change behavior
+  without editing the place that uses the behavior. Your extraction boundary.
+- **fan-in / fan-out** (Metz, *POODR* Ch.9) — find a cluster with low
+  fan-in from outside; that's your safe-to-extract unit.
+- **Extract Module** (Fowler, *Refactoring 2e* Ch.6-7) — the move itself.
+- **Parallel Change** / Expand-Contract (Sato 2014) — old site re-exports
+  new for one deprecation window; callers migrate; then remove the shim.
+  **Never permanent re-export.**
+- **Branch by Abstraction** (Hammant 2007; Humble CD Ch.13) — for
+  re-shaping across many call sites, introduce an abstraction layer first.
+- **Strangler Fig** (Fowler 2004) — for incrementally replacing a large monolith.
+- **Mikado Method** (Brolund 2010) — for surfacing the dependency tree
+  before you touch anything.
+- **Characterization tests** (Feathers, *WELC* Ch.13) — see
+  ctrl-c-v-tdd § T7. Required for any refactor of code without tests.
+
+Recipe (one extraction):
+
+1. Find seam (low fan-in cluster; grep callers; if compiler verifies, lean on it)
+2. Lock current behavior (characterization tests on monolith — § T7)
+3. Extract preserving caller signatures via Parallel Change re-export
+4. 3-tier verify (Cohn pyramid + Humble commit-stage smoke + cold-boot probe)
+5. Stage commit (Beck *Tidy First* 2024: structural-only commit, never mixed)
+6. Deprecation window: schedule removal of the re-export shim
+
+Per-stack mechanics → @${CLAUDE_SKILL_DIR}/playbooks/refactor-extract.md
+Python-specific gotchas (lazy import / dict-vs-setattr / patch-where-used) →
+@${CLAUDE_SKILL_DIR}/playbooks/refactor-extract-python.md
+
 ---
 
 ## — Quick reference —
@@ -199,6 +239,11 @@ Collaboration standards → @${CLAUDE_SKILL_DIR}/playbooks/collab.md
 | Vague commit message | `type(scope): what` |
 | Mixed-concern commit | Split. One commit, one concern |
 | Modifying colleague's code | Their module, their scope |
+| Refactor extract with behavior change in same commit | Split into 2 commits — Beck *Tidy First* |
+| Refactor without characterization test net | Lock GREEN first — Feathers WELC Ch.13 |
+| Changed caller signatures mid-extract | Parallel Change — preserve signature; deprecate later |
+| Permanent re-export shim | Set deprecation window + scheduled removal |
+| Boy Scout tidy inside SMALL/MEDIUM task | Separate task. Refactor mode = explicit LARGE only |
 
 ## — Completion criteria —
 
@@ -207,6 +252,14 @@ Collaboration standards → @${CLAUDE_SKILL_DIR}/playbooks/collab.md
 **Reviewability** — reviewer approves in 60 seconds, zero questions.
 
 **Independence** — colleague works with your code all week, never contacts you.
+
+---
+
+*Source disclaimer:* § 9 recipe and classic-idiom index derived from a single
+Python+FastAPI monolith extraction (gateway/server.py, 2026-06). Concepts
+generalized via Fowler/Feathers/Beck/Meszaros/Humble/Sato; non-Python stacks
+should expect occasional Python-flavor leakage and report back. Not yet
+cross-stack validated.
 
 ---
 
